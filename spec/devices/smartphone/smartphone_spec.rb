@@ -27,4 +27,44 @@ describe 'Smartphone' do
       expect(booking.created_at).to_not be_nil
     end
   end
+
+  describe '.has_booking?' do
+    before do
+      smartphone.login
+    end
+
+    describe 'when has a booking' do
+      let(:booking) { smartphone.book_bike(Bike.new 1, '1827KJK') }
+      before { booking }
+
+      describe 'and is still running' do
+        it 'returns true' do
+          expect(smartphone.has_booking?).to be true
+        end
+      end
+
+      describe 'but is cancelled' do
+        before { booking.cancel! }
+
+        it 'returns false' do
+          expect(smartphone.has_booking?).to be false
+        end
+      end
+    end
+
+    it 'returns false if theres not booking' do
+      expect(smartphone.has_booking?).to be false
+    end
+  end
+
+  describe '.logged_in?' do
+    it 'returns true if smartphone has user' do
+      expect(smartphone.logged_in?).to be false
+    end
+
+    it 'returns false if smartphone hasnt user' do
+      smartphone.login
+      expect(smartphone.logged_in?).to be true
+    end
+  end
 end

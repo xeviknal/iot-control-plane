@@ -1,10 +1,14 @@
 class Bike
-  attr_accessor :id, :plate_no, :is_available
+  attr_accessor :id, :plate_no, :is_available, :last_beep_at
 
   def initialize(id, plate_no)
     self.id = id
     self.plate_no = plate_no
     self.is_available = true
+  end
+
+  def beep
+    self.last_beep_at = Time.now
   end
 
   def self.available
