@@ -6,6 +6,7 @@ describe 'Smartphone' do
 
   describe '.pick_bike' do
     let(:bike) { smartphone.pick_bike}
+    before { smartphone.login }
 
     it 'returns an available bike' do
       expect(bike).to_not be_nil

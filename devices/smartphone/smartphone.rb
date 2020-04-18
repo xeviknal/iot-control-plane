@@ -20,21 +20,27 @@ class Smartphone
   end
 
   def logout
+    return unless logged_in?
+
     self.user = nil
   end
 
   def pick_bike
+    return unless logged_in?
+
     bikes = Bike.available
     bike = bikes.sample
   end
 
   def book_bike(bike)
-    b = Booking.new user, bike
-    b.save!
-    self.booking = b
+    return unless logged_in?
+
+    self.booking = Booking.new user, bike
+    self.booking.save!
   end
 
   def cancel_booking
+    return unless has_booking?
     booking.cancel!
   end
 
