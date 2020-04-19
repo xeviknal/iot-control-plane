@@ -9,6 +9,7 @@ class Bike
 
   def beep
     self.last_beep_at = Time.now
+    p "Bike #{self.plate_no} has beeped"
   end
 
   def self.available
