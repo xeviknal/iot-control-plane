@@ -1,3 +1,5 @@
+require './devices/smartphone/messages/beep'
+
 class Bike
   attr_accessor :id, :plate_no, :is_available, :last_beep_at
 
@@ -8,8 +10,8 @@ class Bike
   end
 
   def beep
+    BeepMessage.new(self.plate_no).send!
     self.last_beep_at = Time.now
-    p "Bike #{self.plate_no} has beeped"
   end
 
   def self.available
