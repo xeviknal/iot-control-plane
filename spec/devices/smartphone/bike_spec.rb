@@ -1,5 +1,6 @@
 require 'spec_helper.rb'
 require './devices/smartphone/bike'
+require './devices/smartphone/messages/beep'
 
 describe 'Bike' do
   let(:bike) { Bike.new 1, '8287KAJ' }
@@ -20,9 +21,12 @@ describe 'Bike' do
 
   describe '.beep' do
     let(:time) { Time.mktime(2020,04,19) }
+    let(:msg) { double('BeepMessage') }
 
     before do
-      allow(Time).to receive(:now).and_return(time)
+      expect(Time).to receive(:now).and_return(time)
+      expect(BeepMessage).to receive(:new).with(bike.plate_no).and_return(msg).once
+      expect(msg).to receive('send!').once
       bike.beep
     end
 
