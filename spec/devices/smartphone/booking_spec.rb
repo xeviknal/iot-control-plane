@@ -2,10 +2,12 @@ require 'spec_helper.rb'
 require './devices/smartphone/bike'
 require './devices/smartphone/booking'
 require './devices/smartphone/messages/bookings/create'
+require './devices/smartphone/messages/bookings/cancel'
 
 describe 'Booking' do
   let(:bike) { Bike.new 2, '1872KXK' }
   let(:booking) { Booking.new 'test@test.com', bike }
+  let(:time) { Time.mktime(2020,04,19) }
 
   describe '.new' do
     it 'creates a booking' do
@@ -15,7 +17,6 @@ describe 'Booking' do
   end
 
   describe '.save!' do
-    let(:time) { Time.mktime(2020,04,19) }
     let(:msg) { double('BookingCreateMessage') }
 
     before do
@@ -31,7 +32,14 @@ describe 'Booking' do
   end
 
   describe '.cancel' do
-    before { booking.cancel! }
+    let(:msg) { double('BookingCancelMessage') }
+
+    before do
+      expect(Time).to receive(:now).and_return(time)
+      expect(BookingCancelMessage).to receive(:new).with('test@test.com/2').and_return(msg).once
+      expect(msg).to receive('send!')
+      booking.cancel!
+    end
 
     it 'sets the booking as cancelled' do
       expect(booking.canceled_at).to_not be_nil

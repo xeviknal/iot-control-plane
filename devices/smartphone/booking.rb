@@ -1,4 +1,5 @@
 require './devices/smartphone/messages/bookings/create'
+require './devices/smartphone/messages/bookings/cancel'
 
 class Booking
   attr_accessor :user, :bike, :created_at, :canceled_at
@@ -8,15 +9,19 @@ class Booking
     self.bike = bike
   end
 
-  # Todo: notify to API
+  def message_id
+    "#{self.user}/#{self.bike.id}"
+  end
+
   def save!
-    BookingCreateMessage.new("#{self.user}/#{self.bike.id}").send!
+    BookingCreateMessage.new(message_id).send!
     self.created_at = Time.now
 
     self
   end
 
   def cancel!
+    BookingCancelMessage.new(message_id).send!
     self.canceled_at = Time.now
   end
 
