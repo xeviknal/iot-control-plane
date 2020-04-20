@@ -1,4 +1,4 @@
-require './devices/smartphone/messages/beep'
+require './devices/smartphone/messages/bikes/beep'
 
 class Bike
   attr_accessor :id, :plate_no, :is_available, :last_beep_at

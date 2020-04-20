@@ -1,6 +1,6 @@
 require 'spec_helper.rb'
 require './devices/smartphone/bike'
-require './devices/smartphone/messages/beep'
+require './devices/smartphone/messages/bikes/beep'
 
 describe 'Bike' do
   let(:bike) { Bike.new 1, '8287KAJ' }
