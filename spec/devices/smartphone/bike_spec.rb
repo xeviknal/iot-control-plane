@@ -19,14 +19,32 @@ describe 'Bike' do
     end
   end
 
+  describe '.create' do
+    let(:time) { Time.mktime(2020,04,19) }
+    let(:msg) { double('BikeCreateMessage') }
+
+    before do
+      expect(Time).to receive(:now).and_return(time)
+      expect(BikeCreateMessage).to receive(:new).with('1/8287KAJ').and_return(msg).once
+      expect(msg).to receive('send!').once
+
+      bike.save!
+    end
+
+    it 'announces a new bike' do
+      expect(bike.created_at).to eq time
+    end
+  end
+
   describe '.beep' do
     let(:time) { Time.mktime(2020,04,19) }
     let(:msg) { double('BeepMessage') }
 
     before do
       expect(Time).to receive(:now).and_return(time)
-      expect(BeepMessage).to receive(:new).with(bike.plate_no).and_return(msg).once
+      expect(BeepMessage).to receive(:new).with('1/8287KAJ').and_return(msg).once
       expect(msg).to receive('send!').once
+
       bike.beep
     end
 

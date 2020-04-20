@@ -1,7 +1,8 @@
+require './devices/smartphone/messages/bikes/create'
 require './devices/smartphone/messages/bikes/beep'
 
 class Bike
-  attr_accessor :id, :plate_no, :is_available, :last_beep_at
+  attr_accessor :id, :plate_no, :is_available, :last_beep_at, :created_at
 
   def initialize(id, plate_no)
     self.id = id
@@ -9,8 +10,19 @@ class Bike
     self.is_available = true
   end
 
+  def message_id
+    "#{self.id}/#{self.plate_no}"
+  end
+
+  def save!
+    BikeCreateMessage.new(message_id).send!
+    self.created_at = Time.now
+
+    self
+  end
+
   def beep
-    BeepMessage.new(self.plate_no).send!
+    BeepMessage.new(message_id).send!
     self.last_beep_at = Time.now
   end
 
